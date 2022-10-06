@@ -1,8 +1,10 @@
 import React from "react";
 import { inject, observer } from "mobx-react";
+import { useTranslation } from "react-i18next";
 
 const TodoItem = inject("todoStore")(
   observer(({ todo, todoStore }: any) => {
+    const { t } = useTranslation();
     return (
       <li className="todo-item">
         <div style={{ display: "flex", gap: 8 }}>
@@ -20,7 +22,7 @@ const TodoItem = inject("todoStore")(
           className="del-btn"
           onClick={() => todoStore.removeTodo(todo.id)}
         >
-          delete
+          {t("delete")}
         </button>
       </li>
     );

@@ -1,6 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { runInAction } from "mobx";
 import { inject, observer } from "mobx-react";
+import i18n from "i18next";
+import { useTranslation } from "react-i18next";
+
+enum Languages {
+  english = "en",
+  telugu = "te",
+}
 
 const todosDataUrl =
   "https://raw.githubusercontent.com/jherr/todos-four-ways/master/data/todos.json";
@@ -8,12 +15,21 @@ const todosDataUrl =
 const AddTodo = inject("todoStore")(
   observer((props) => {
     const { todoStore: store } = props;
+    const { t } = useTranslation();
+
+    const [lng, changeLng] = useState("en");
+
+    const onChangeLng = (e: React.ChangeEvent<HTMLSelectElement>) => {
+      changeLng(e.currentTarget.value);
+      i18n.changeLanguage(e.currentTarget.value);
+    };
+
     return (
       <>
         <div className="add-todo-container">
           <input
             type="text"
-            placeholder="New Todo"
+            placeholder={t("newTodo")}
             className="add-todo-input"
             value={store.newTodo}
             onChange={(e) =>
@@ -21,7 +37,7 @@ const AddTodo = inject("todoStore")(
             }
           />
           <button type="button" onClick={store.addTodo} className="add-btn">
-            Add
+            {t("add")}
           </button>
         </div>
         <div className="d-flex">
@@ -30,12 +46,17 @@ const AddTodo = inject("todoStore")(
             className="load-btn"
             onClick={() => store.load(todosDataUrl)}
           >
-            Load sample todos
+            {t("loadSampleTodos")}
           </button>
 
           <button type="button" className="del-btn" onClick={store.clearTodos}>
-            clear todos
+            {t("clearTodos")}
           </button>
+
+          <select value={lng} onChange={onChangeLng}>
+            <option value={Languages.english}>English</option>
+            <option value={Languages.telugu}>Telugu</option>
+          </select>
         </div>
       </>
     );

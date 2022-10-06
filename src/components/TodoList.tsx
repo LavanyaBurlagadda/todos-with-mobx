@@ -2,17 +2,19 @@ import React from "react";
 import { inject, observer } from "mobx-react";
 import { filterConst } from "../constants/filterConst";
 import TodoItemsList from "./TodoItemsList";
+import { useTranslation } from "react-i18next";
 
 const TodoList = inject("todoStore")(
   observer((props) => {
     const { todoStore: store } = props;
     const currFilter = store.activeFilter;
+    const { t } = useTranslation();
 
     return (
       <div className="todo-list-container">
         {store.todos.length === 0 ? (
           <div className="no-todos-container">
-            <p>Get started by adding a Todo</p>
+            <p>{t("getStarted")}</p>
           </div>
         ) : (
           <>
@@ -24,7 +26,7 @@ const TodoList = inject("todoStore")(
                   currFilter === filterConst.completed && "active-filter-btn"
                 }`}
               >
-                Completed
+                {t("filters.completed")}
               </button>
               <button
                 type="button"
@@ -33,7 +35,7 @@ const TodoList = inject("todoStore")(
                   currFilter === filterConst.pending && "active-filter-btn"
                 }`}
               >
-                Todo
+                {t("filters.pending")}
               </button>
               <button
                 type="button"
@@ -42,7 +44,7 @@ const TodoList = inject("todoStore")(
                   currFilter === filterConst.all && "active-filter-btn"
                 }`}
               >
-                All
+                {t("filters.all")}
               </button>
             </div>
             <TodoItemsList />
