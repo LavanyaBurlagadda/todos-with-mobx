@@ -63,4 +63,4 @@ const AddTodo = inject("todoStore")(
   })
 );
 
-export default AddTodo;
+export default inject("todoStore")(observer(AddTodo));
